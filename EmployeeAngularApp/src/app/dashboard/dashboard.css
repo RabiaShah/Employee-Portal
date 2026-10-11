@@ -1,0 +1,221 @@
+:host {
+  --nav-bg: #17324d;
+  --nav-hover: #24486a;
+  --nav-text: #d8e4ee;
+  --nav-muted: #8fa9c0;
+  --accent: #5fd0c0;
+  --nav-width: 248px;
+  --nav-width-collapsed: 72px;
+  --speed: 220ms;
+  display: block;
+  position: sticky;
+  top: 0;
+  flex-shrink: 0;
+  height: 100vh;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: var(--nav-width);
+  height: 100%;
+  padding: 16px 12px;
+  background: var(--nav-bg);
+  color: var(--nav-text);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  transition: width var(--speed) ease;
+}
+
+  .sidebar.is-collapsed {
+    width: var(--nav-width-collapsed);
+  }
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  height: 44px;
+  margin-bottom: 20px;
+  padding-left: 12px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+  padding: 10px;
+  border-radius: 8px;
+  color: var(--text-strong);
+  font-weight: 600;
+  font-size: 1.05rem;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+  .brand:hover {
+    background: var(--bg-hover);
+  }
+
+  .brand.active {
+    background: var(--accent);
+    color: #0b1b2b;
+  }
+
+.brand-icon {
+  font-size: 1.3rem;
+  min-width: 24px;
+  text-align: center;
+}
+
+.toggle-btn {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.sidebar.is-collapsed .sidebar-header {
+  justify-content: center;
+  padding-left: 0;
+}
+
+.sidebar.is-collapsed .brand {
+  width: 0;
+  opacity: 0;
+}
+
+.toggle {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--nav-muted);
+  cursor: pointer;
+  transition: background var(--speed) ease, color var(--speed) ease;
+}
+
+  .toggle:hover {
+    background: var(--nav-hover);
+    color: var(--nav-text);
+  }
+
+  .toggle svg {
+    transition: transform var(--speed) ease;
+  }
+
+.sidebar.is-collapsed .toggle svg {
+  transform: rotate(180deg);
+}
+
+.menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nav-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 44px;
+  padding: 0 12px;
+  border-radius: 8px;
+  color: var(--nav-text);
+  text-decoration: none;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background var(--speed) ease;
+}
+
+  .nav-link:hover {
+    background: var(--nav-hover);
+  }
+
+  .nav-link.active {
+    background: var(--nav-hover);
+    font-weight: 600;
+  }
+
+    /* accent bar marks the current page */
+    .nav-link.active::before {
+      content: '';
+      position: absolute;
+      left: -12px;
+      top: 8px;
+      bottom: 8px;
+      width: 4px;
+      border-radius: 0 4px 4px 0;
+      background: var(--accent);
+    }
+
+.nav-icon {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.nav-label {
+  overflow: hidden;
+  transition: opacity var(--speed) ease, width var(--speed) ease;
+}
+
+.sidebar.is-collapsed .nav-label {
+  width: 0;
+  opacity: 0;
+}
+
+/* tooltip shown only while collapsed */
+.sidebar.is-collapsed .nav-link:hover::after,
+.sidebar.is-collapsed .nav-link:focus-visible::after {
+  content: attr(data-label);
+  position: absolute;
+  left: calc(100% + 14px);
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: #0e2236;
+  color: #fff;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.toggle:focus-visible,
+.nav-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}

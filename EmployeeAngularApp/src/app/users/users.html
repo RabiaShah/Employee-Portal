@@ -1,0 +1,113 @@
+<section class="users-page">
+  <div class="wrap">
+    <header class="page-header">
+      <h2>Users</h2>
+      <button type="button" class="btn btn-primary" (click)="openAdd()">
+        <i class="bi bi-plus-lg"></i> Add user
+      </button>
+    </header>
+    <div class="search-bar">
+      <i class="bi bi-search"></i>
+      <input type="text"
+             [(ngModel)]="searchTerm"
+             placeholder="Search by first or last name"
+             aria-label="Search users by name" />
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table class="users-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Address</th>
+          <th>Phone</th>
+          <th>Department</th>
+          <th>Designation</th>
+          <th class="actions-col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of filteredUsers">
+          <td>{{ user.firstName }} {{user.lastName}}</td>
+          <td>{{ user.address }}</td>
+          <td>{{ user.phone }}</td>
+          <td>{{ user.department }}</td>
+          <td>{{ user.designation }}</td>
+          <td class="actions-col">
+            <button type="button" class="icon-btn edit" (click)="openEdit(user)" title="Edit" aria-label="Edit user">
+              <i class="bi bi-pencil-square"></i>
+            </button>
+            <button type="button" class="icon-btn delete" (click)="askDelete(user)" title="Delete" aria-label="Delete user">
+              <i class="bi bi-trash3"></i>
+            </button>
+          </td>
+        </tr>
+
+        <tr *ngIf="filteredUsers.length === 0">
+          <td colspan="6" class="empty">
+            {{ searchTerm ? 'No users match your search.' : 'No users yet. Click "Add user" to create one.' }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Add / Edit dialog -->
+  <div class="backdrop" *ngIf="showForm" (click)="closeForm()">
+    <div class="dialog" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+      <h3>{{ isEditing ? 'Edit user' : 'Add user' }}</h3>
+
+      <form #userForm="ngForm" (ngSubmit)="save(userForm)" novalidate>
+        <label>
+          Name
+          <input name="name" [(ngModel)]="formUser.name" required #name="ngModel" />
+          <small class="error" *ngIf="name.invalid && (name.touched || userForm.submitted)">Name is required.</small>
+        </label>
+
+        <label>
+          Address
+          <input name="address" [(ngModel)]="formUser.email" required email #email="ngModel" />
+          <small class="error" *ngIf="email.invalid && (email.touched || userForm.submitted)">Enter a valid email.</small>
+        </label>
+
+        <label>
+          Phone
+          <input name="phone" [(ngModel)]="formUser.phone" required pattern="^[0-9+\-\s]{7,15}$" #phone="ngModel" />
+          <small class="error" *ngIf="phone.invalid && (phone.touched || userForm.submitted)">Enter a valid phone number.</small>
+        </label>
+
+        <label>
+          Department
+          <select name="department" [(ngModel)]="formUser.department" required>
+            <option *ngFor="let d of dept" [value]="d">{{ d.deptName }}</option>
+          </select>
+        </label>
+
+        <label>
+          Designation
+          <select name="designation" [(ngModel)]="formUser.designation" required>
+            <option *ngFor="let d of design" [value]="d">{{ d.desigName }}</option>
+          </select>
+        </label>
+
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-ghost" (click)="closeForm()">Cancel</button>
+          <button type="submit" class="btn btn-primary">{{ isEditing ? 'Save changes' : 'Add user' }}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Delete confirmation -->
+  <div class="backdrop" *ngIf="userToDelete" (click)="userToDelete = null">
+    <div class="dialog small" role="alertdialog" aria-modal="true" (click)="$event.stopPropagation()">
+      <h3>Delete user</h3>
+      <p>Delete <strong>{{ userToDelete.name }}</strong>? This can't be undone.</p>
+      <div class="dialog-actions">
+        <button type="button" class="btn btn-ghost" (click)="userToDelete = null">Cancel</button>
+        <button type="button" class="btn btn-danger" (click)="confirmDelete()">Delete</button>
+      </div>
+    </div>
+  </div>
+</section>
