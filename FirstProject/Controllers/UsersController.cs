@@ -34,7 +34,7 @@ namespace FirstProject.Controllers
         public async Task<IActionResult> GetUsersAsync() {
             try
             {
-                var users =  await dbContext.Users.ToListAsync();
+                List<User> users =  await dbContext.Users.FromSqlRaw("EXEC getUsers").ToListAsync();
                 return Ok(users);
             }
             catch (Exception ex)
@@ -44,14 +44,14 @@ namespace FirstProject.Controllers
         }
 
         [HttpPost("AddUser")]
-        public async Task<IActionResult> AddUser(User user) {
+        public async Task<IActionResult> AddUser([FromBody]User user) {
             try
             {
                 dbContext.Users.Add(user);
                 var adduser = await dbContext.SaveChangesAsync();
 
-                if (adduser == 1) return Ok("User added successfully!");
-                else BadRequest("Unable to add user");
+                if (adduser == 1) return Ok(new { message = "success" });
+                else return BadRequest(new { message = "Unable to add user" });
 
                 return NoContent();
             }
@@ -62,19 +62,19 @@ namespace FirstProject.Controllers
         }
 
         [HttpPut("UpdateUser")]
-        public async Task<IActionResult> UpdateUser(User newUser) {
+        public async Task<IActionResult> UpdateUser([FromBody]User newUser) {
             var user = dbContext.Users.Find(newUser.Id);
             if (user != null)
             {
                 dbContext.Entry(user).CurrentValues.SetValues(newUser);
                 var result = await dbContext.SaveChangesAsync();
                 if (result != 0)
-                    return Ok("User updated successfully!");
+                    return Ok(new { message = "success" });
                 else
-                    return BadRequest("Unable to update user.");
+                    return BadRequest(new { message = "Unable to update user." });
             }
             else
-                return NotFound("User not found");
+                return NotFound(new { message = "User not found" });
         }
 
         [HttpPatch("RemoveUser/{id}")]
@@ -87,13 +87,13 @@ namespace FirstProject.Controllers
                 user.IsActive = false;
                 var result = await dbContext.SaveChangesAsync();
                 if (result != 0)
-                    return Ok("User removed successfully!");
+                    return Ok(new { message = "User removed successfully!" });
                 else
-                    return BadRequest("Unable to remove user.");
+                    return BadRequest(new { message = "Unable to remove user." });
 
             }
             else
-                return NotFound("User not found.");
+                return NotFound(new { message = "User not found." });
         }
 
         [HttpDelete("DeleteUser/{id}")]
@@ -107,9 +107,9 @@ namespace FirstProject.Controllers
                 var result = await dbContext.SaveChangesAsync();
 
                 if (result != 0)
-                    return Ok("User deleted successfully");
+                    return Ok(new { message = "success" });
                 else
-                    return BadRequest("Unable to delete user.");
+                    return BadRequest(new { message = "Unable to delete user." });
 
             }
 

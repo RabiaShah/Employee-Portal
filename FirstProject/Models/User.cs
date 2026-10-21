@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FirstProject.Models;
 
@@ -19,10 +20,14 @@ public partial class User
     public int DeptId { get; set; }
 
     public int DesigId { get; set; }
-
+        
     public bool IsActive { get; set; }
 
-    public virtual Departments Dept { get; set; } = null!;
+    public string? Department { get; set; } = null;
 
-    public virtual Designation Desig { get; set; } = null!;
+    public string? Designation { get; set; } = null;
+
+    public virtual Departments? Dept { get; set; } = null;
+
+    public virtual Designation? Desig { get; set; } = null;
 }

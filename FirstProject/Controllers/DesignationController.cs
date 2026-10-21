@@ -38,8 +38,8 @@ namespace FirstProject.Controllers
                 dbContext.Designations.Add(designation);
                 var addDesig = await dbContext.SaveChangesAsync();
 
-                if (addDesig == 1) return Ok("Designation added successfully!");
-                else BadRequest("Unable to add designation");
+                if (addDesig == 1) return Ok(new { message = "Designation added successfully!" });
+                else return BadRequest(new { message = "Unable to add designation" });
 
                 return NoContent();
             }
@@ -60,12 +60,12 @@ namespace FirstProject.Controllers
                     dbContext.Entry(designation).CurrentValues.SetValues(newDesignation);
                     var result = await dbContext.SaveChangesAsync();
                     if (result != 0)
-                        return Ok("Designation updated successfully!");
+                        return Ok(new { message = "Designation updated successfully!" });
                     else
-                        return BadRequest("Unable to update designation.");
+                        return BadRequest(new { message = "Unable to update designation." });
                 }
                 else
-                    return NotFound("Designation not found");
+                    return NotFound(new { message = "Designation not found" });
             }
             catch (Exception ex)
             {
@@ -86,9 +86,9 @@ namespace FirstProject.Controllers
                     var result = await dbContext.SaveChangesAsync();
 
                     if (result != 0)
-                        return Ok("Designation deleted successfully");
+                        return Ok(new { message = "Designation deleted successfully" });
                     else
-                        return BadRequest("Unable to delete designation.");
+                        return BadRequest(new { message = "Unable to delete designation." });
                 }
 
                 return NoContent();

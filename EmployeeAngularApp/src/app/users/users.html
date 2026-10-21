@@ -60,15 +60,20 @@
 
       <form #userForm="ngForm" (ngSubmit)="save(userForm)" novalidate>
         <label>
-          Name
-          <input name="name" [(ngModel)]="formUser.name" required #name="ngModel" />
-          <small class="error" *ngIf="name.invalid && (name.touched || userForm.submitted)">Name is required.</small>
+          First Name
+          <input name="firstName" [(ngModel)]="formUser.firstName" required #fname="ngModel" />
+          <small class="error" *ngIf="fname.invalid && (fname.touched || userForm.submitted)">First Name is required.</small>
+        </label>
+
+        <label>
+          Last Name
+          <input name="lastName" [(ngModel)]="formUser.lastName" required #lastName="ngModel" />
+          <small class="error" *ngIf="lastName.invalid && (lastName.touched || userForm.submitted)">Last Name is required.</small>
         </label>
 
         <label>
           Address
-          <input name="address" [(ngModel)]="formUser.email" required email #email="ngModel" />
-          <small class="error" *ngIf="email.invalid && (email.touched || userForm.submitted)">Enter a valid email.</small>
+          <input name="address" [(ngModel)]="formUser.address" #address="ngModel" />
         </label>
 
         <label>
@@ -79,15 +84,15 @@
 
         <label>
           Department
-          <select name="department" [(ngModel)]="formUser.department" required>
-            <option *ngFor="let d of dept" [value]="d">{{ d.deptName }}</option>
+          <select name="department" [(ngModel)]="formUser.deptId">
+            <option *ngFor="let d of departments" [value]="d.deptId">{{ d.deptName }}</option>
           </select>
         </label>
 
         <label>
           Designation
-          <select name="designation" [(ngModel)]="formUser.designation" required>
-            <option *ngFor="let d of design" [value]="d">{{ d.desigName }}</option>
+          <select name="designation" [(ngModel)]="formUser.desigId">
+            <option *ngFor="let d of designations" [value]="d.desigId">{{ d.desigName }}</option>
           </select>
         </label>
 
@@ -103,7 +108,7 @@
   <div class="backdrop" *ngIf="userToDelete" (click)="userToDelete = null">
     <div class="dialog small" role="alertdialog" aria-modal="true" (click)="$event.stopPropagation()">
       <h3>Delete user</h3>
-      <p>Delete <strong>{{ userToDelete.name }}</strong>? This can't be undone.</p>
+      <p>Delete <strong>{{ userToDelete.firstName }}</strong>? This can't be undone.</p>
       <div class="dialog-actions">
         <button type="button" class="btn btn-ghost" (click)="userToDelete = null">Cancel</button>
         <button type="button" class="btn btn-danger" (click)="confirmDelete()">Delete</button>

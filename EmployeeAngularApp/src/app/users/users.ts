@@ -5,14 +5,6 @@ import {User} from '../models/Users';
 import {Designation} from '../models/Designations';
 
  
-export interface users {
-  id: number;
-  name: string;
-  email: string;
-  phone: string;
-  department: string;
-  designation: string;
-}
 
 @Component({
   selector: 'app-users',
@@ -22,8 +14,20 @@ export interface users {
 })
 export class Users implements OnInit{
 
-private apiUrl = 'http://localhost:5171/api';
-data = signal<any[]>([]);
+  private apiUrl = 'http://localhost:5171/api';
+  data = signal<any[]>([]);
+  searchTerm = '';
+
+  showForm = false;
+  isEditing = false;
+  formUser: User = this.emptyUser();
+  userToDelete: User | null = null;
+ 
+  // departments = ['Engineering', 'HR', 'Finance', 'Marketing', 'Sales'];
+  // designations = ['Intern', 'Associate', 'Senior Associate', 'Manager', 'Director'];
+
+  departments : any[] = [];
+  designations : any[] = [];
 
 constructor(private http: HttpClient) {}
 
@@ -33,23 +37,12 @@ ngOnInit() {
   this.getDesignations();
 }
 
- searchTerm = '';
  
-  showForm = false;
-  isEditing = false;
-  formUser: users = this.emptyUser();
-  userToDelete: users | null = null;
- 
-  departments = ['Engineering', 'HR', 'Finance', 'Marketing', 'Sales'];
-  designations = ['Intern', 'Associate', 'Senior Associate', 'Manager', 'Director'];
-
-  dept : any[] = [];
-  design : any[] = [];
 
   getDepartments() {
     this.http.get<any[]>(`${this.apiUrl}/Departments/GetDepartments`).subscribe({
       next: (data) => {
-        this.dept = data;
+        this.departments = data;
       },
       error: (error) => {
         console.error('GET Error:', error);
@@ -60,7 +53,7 @@ ngOnInit() {
 
 getUsers() {
   this.http.get<any[]>(`${this.apiUrl}/Users/GetUsersAsync`).subscribe({
-      next: (data) => {
+    next: (data) => {
         this.data.set(data);
       },
       error: (error) => {
@@ -73,7 +66,7 @@ getDesignations() {
 
   this.http.get<any[]>(`${this.apiUrl}/Designation/GetDesignations`).subscribe({
     next: (data) => {
-      this.design = data;
+      this.designations = data;
     },
     error: (error) => {
       console.error('GET Error', error);
@@ -94,7 +87,7 @@ getDesignations() {
     );
   }
  
-  trackById(_: number, user: users): number {
+  trackById(_: number, user: User): number  {
     return user.id;
   }
  
@@ -104,7 +97,7 @@ getDesignations() {
     this.showForm = true;
   }
  
-  openEdit(user: users): void {
+  openEdit(user: User): void {
     this.isEditing = true;
     this.formUser = { ...user }; // copy so cancelling doesn't change the row
     this.showForm = true;
@@ -121,29 +114,50 @@ getDesignations() {
  
     if (this.isEditing) {
       // TODO: call your API here, e.g. this.userService.update(this.formUser)
-      this.data.set( this.data().map((u) => (u.id === this.formUser.id ? { ...this.formUser } : u)));
+      this.http.put<any>(`${this.apiUrl}/Users/UpdateUser`,this.formUser).subscribe({
+        next: (data) => {
+          this.getUsers();
+        },
+        error: (error) => {
+          console.log(error.error);
+        }
+      });
     } else {
       // TODO: call your API here, e.g. this.userService.create(this.formUser)
-      const nextId = this.data().length ? Math.max(...this.data().map((u) => u.id)) + 1 : 1;
-      this.data.set([...this.data(), { ...this.formUser, id: nextId }]);
+      debugger;
+      this.http.post<any>(`${this.apiUrl}/Users/AddUser`,this.formUser).subscribe({
+        next: (data) => {
+          this.getUsers();
+        },
+        error: (error) => {
+          console.log(error.error);
+        }
+      });
     }
     this.closeForm();
   }
  
-  askDelete(user: users): void {
+  askDelete(user: User): void {
     this.userToDelete = user;
   }
  
   confirmDelete(): void {
     if (this.userToDelete) {
       // TODO: call your API here, e.g. this.userService.delete(this.userToDelete.id)
-      const id = this.userToDelete.id;
-      this.data.set(this.data().filter((u) => u.id !== id));
+
+      this.http.delete<any>(`${this.apiUrl}/Users/DeleteUser/${this.userToDelete.id}`).subscribe({
+        next: (data) => {
+          this.getUsers();
+        },
+        error: (error) => {
+          console.log(error.error);
+        }
+      });
       this.userToDelete = null;
     }
   }
  
-  private emptyUser(): users {
-    return { id: 0, name: '', email: '', phone: '', department: 'Engineering', designation: 'Associate' };
+  private emptyUser(): User {
+    return { id: 0, firstName: '', lastName: '', phone: null, address: null, deptId: 1, desigId: 1, isActive: true, department: null, designation: null};
   }
 }

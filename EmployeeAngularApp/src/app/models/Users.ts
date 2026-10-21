@@ -8,8 +8,8 @@ export interface User {
   phone: number | null;
   address: string | null;
   deptId: number;
+  department: string | null;
   desigId: number;
+  designation: string | null;
   isActive: boolean;
-  dept?: Department | null;
-  desig?: Designation | null;
 }

@@ -38,8 +38,8 @@ namespace FirstProject.Controllers
                 dbContext.Departments.Add(department);
                 var addDept = await dbContext.SaveChangesAsync();
 
-                if (addDept == 1) return Ok("Department added successfully!");
-                else BadRequest("Unable to add department");
+                if (addDept == 1) return Ok(new { message = "Department added successfully!" });
+                else return BadRequest(new { message = "Unable to add department" });
 
                 return NoContent();
             }
@@ -60,12 +60,12 @@ namespace FirstProject.Controllers
                     dbContext.Entry(department).CurrentValues.SetValues(newDepartment);
                     var result = await dbContext.SaveChangesAsync();
                     if (result != 0)
-                        return Ok("Department updated successfully!");
+                        return Ok(new { message = "Department updated successfully!" });
                     else
-                        return BadRequest("Unable to update department.");
+                        return BadRequest(new { message = "Unable to update department." });
                 }
                 else
-                    return NotFound("Department not found");
+                    return NotFound(new { message = "Department not found" });
             }
             catch (Exception ex)
             {
@@ -85,12 +85,12 @@ namespace FirstProject.Controllers
                     department.IsActive = false;
                     var result = await dbContext.SaveChangesAsync();
                     if (result != 0)
-                        return Ok("Department removed successfully!");
+                        return Ok(new { message = "Department removed successfully!" });
                     else
-                        return BadRequest("Unable to remove department.");
+                        return BadRequest(new { message = "Unable to remove department." });
                 }
                 else
-                    return NotFound("Department not found.");
+                    return NotFound(new { message = "Department not found." });
             }
             catch (Exception ex)
             {
@@ -111,9 +111,9 @@ namespace FirstProject.Controllers
                     var result = await dbContext.SaveChangesAsync();
 
                     if (result != 0)
-                        return Ok("Department deleted successfully");
+                        return Ok(new { message = "Department deleted successfully" });
                     else
-                        return BadRequest("Unable to delete department.");
+                        return BadRequest(new { message = "Unable to delete department." });
                 }
 
                 return NoContent();
