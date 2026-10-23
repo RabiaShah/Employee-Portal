@@ -1,0 +1,251 @@
+:host {
+  --navy: #1f2a37;
+  --navy-2: #0f172a;
+  --accent: #38bdf8;
+  --accent-ink: #0b1b2b;
+  --muted: #64748b;
+  --line: #e2e8f0;
+  display: block;
+}
+
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: radial-gradient(circle at 15% 20%, rgba(56, 189, 248, 0.25), transparent 45%), radial-gradient(circle at 85% 80%, rgba(99, 102, 241, 0.25), transparent 45%), linear-gradient(135deg, var(--navy-2), var(--navy));
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+  animation: rise 0.5s ease both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.field-icon,
+.toggle-btn svg,
+.alert-icon {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Card content */
+.card-body-wrap {
+  padding: 40px 36px;
+}
+
+.form-inner {
+  width: 100%;
+}
+
+.logo-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.logo {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  color: #fff;
+  background: linear-gradient(135deg, #38bdf8, #0284c7);
+  box-shadow: 0 8px 20px rgba(14, 165, 233, 0.35);
+}
+
+  .logo svg {
+    width: 28px;
+    height: 28px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+.brand-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.form-inner h1 {
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  text-align: center;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+
+.form-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--navy);
+}
+
+/* Inputs with leading icon */
+.field {
+  position: relative;
+}
+
+.field-icon {
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  width: 20px;
+  height: 20px;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.field .form-control {
+  height: 46px;
+  padding-left: 44px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background-color: #f8fafc;
+}
+
+  .field .form-control.has-toggle {
+    padding-right: 46px;
+  }
+
+  .field .form-control:focus {
+    background-color: #fff;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.22);
+  }
+
+  .field .form-control.is-invalid {
+    background-image: none; /* hide Bootstrap's built-in icon so it doesn't clash with the eye button */
+  }
+
+.field:focus-within .field-icon {
+  color: #0284c7;
+}
+
+.toggle-btn {
+  position: absolute;
+  top: 5px;
+  right: 6px;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+  .toggle-btn:hover {
+    background: #e2e8f0;
+    color: var(--navy);
+  }
+
+  .toggle-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+
+.alert-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.form-check-input:checked {
+  background-color: #0284c7;
+  border-color: #0284c7;
+}
+
+.link {
+  color: #0284c7;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+  .link:hover {
+    text-decoration: underline;
+  }
+
+/* Sign in button */
+.btn-signin {
+  height: 48px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  color: var(--accent-ink);
+  background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+  box-shadow: 0 8px 20px rgba(14, 165, 233, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+  .btn-signin:hover:not(:disabled) {
+    transform: translateY(-1px);
+    filter: brightness(1.05);
+    box-shadow: 0 12px 24px rgba(14, 165, 233, 0.45);
+  }
+
+  .btn-signin:disabled {
+    opacity: 0.75;
+    color: var(--accent-ink);
+  }
+
+button:focus-visible,
+.link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: 12px;
+  }
+
+  .card-body-wrap {
+    padding: 32px 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .login-card {
+    animation: none;
+  }
+
+  .btn-signin {
+    transition: none;
+  }
+}

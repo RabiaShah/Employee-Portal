@@ -1,8 +1,12 @@
 
-
-<div class="layout">
-  <app-dashboard></app-dashboard>
-  <main class="content">
-    <router-outlet></router-outlet>
-  </main>
-</div>
+@if (auth.isLoggedIn())
+{
+  <div class="layout">
+    <app-dashboard></app-dashboard>
+    <main class="content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+} @else {
+  <app-login></app-login>
+}

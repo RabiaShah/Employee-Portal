@@ -8,9 +8,10 @@ import { Designations } from './designations/designations';
 import { Departments } from './departments/departments';
 import { Home } from './home/home';
 import { Dashboard } from './dashboard/dashboard';
+import { Login } from './login/login';
 
 @NgModule({
-  declarations: [App, Users, Designations, Departments, Home, Dashboard],
+  declarations: [App, Users, Designations, Departments, Home, Dashboard, Login],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [provideBrowserGlobalErrorListeners()],
   bootstrap: [App],

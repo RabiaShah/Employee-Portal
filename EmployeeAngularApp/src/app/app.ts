@@ -1,4 +1,5 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, inject } from '@angular/core';
+import { AuthService } from '../app/services/auth/auth';
 
 @Component({
   selector: 'app-root',
@@ -8,11 +9,10 @@ import { Component, Output, EventEmitter } from '@angular/core';
 })
 
 export class App {
-  //protected readonly title = signal('EmployeeAngularApp');
 
- isCollapsed = false;
+  isCollapsed = false;
+  auth = inject(AuthService);
  
-  /** Emits true when collapsed, so the parent layout can react if it needs to. */
   @Output() collapsedChange = new EventEmitter<boolean>();
  
   toggle(): void {

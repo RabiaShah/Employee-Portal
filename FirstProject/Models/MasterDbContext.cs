@@ -19,4 +19,5 @@ public partial class MasterDbContext : DbContext
     public virtual DbSet<Designation> Designations { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
+    public virtual DbSet<Login> Login { get; set; }
 }

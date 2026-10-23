@@ -6,11 +6,12 @@ import { Designations } from './designations/designations';
 import { Departments } from './departments/departments';
 import { App } from './app';
 import { Dashboard } from './dashboard/dashboard';
+import { Login } from './login/login';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
   {
@@ -36,6 +37,10 @@ const routes: Routes = [
   {
     path: 'departments',
     component: Departments
+  },
+  {
+    path: 'login',
+    component: Login
   }
 
 ];
