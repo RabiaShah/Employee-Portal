@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FirstProject.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using FirstProject.Models;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace EmployeeApp.Controllers
 {
@@ -9,10 +13,12 @@ namespace EmployeeApp.Controllers
     public class LoginController : ControllerBase
     {
         private readonly MasterDbContext dbContext;
+        private readonly IConfiguration config;
 
-        public LoginController(MasterDbContext _dbContext)
+        public LoginController(MasterDbContext _dbContext, IConfiguration _config)
         {
             dbContext = _dbContext;
+            config = _config;
         }
 
         [HttpPost("login")]
@@ -23,7 +29,23 @@ namespace EmployeeApp.Controllers
                 var existingUser = dbContext.Login.FirstOrDefault(l => l.Username == login.Username && l.Password == login.Password);
                 if (existingUser != null)
                 {
-                    return Ok(new { token = "Login successful" });
+                    var claims = new[]
+                    {
+                        new Claim(ClaimTypes.Name, existingUser.Username),
+                        new Claim("userId", existingUser.Id.ToString() ?? "")
+                    };
+                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]!));
+                    var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+                    var token = new JwtSecurityToken(
+                        issuer: config["Jwt:Issuer"],
+                        audience: config["Jwt:Audience"],
+                        claims: claims,
+                        expires: DateTime.UtcNow.AddHours(1),
+                        signingCredentials: creds);
+
+
+                    return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token), user = existingUser.Username });
                 }
                 else
                 {

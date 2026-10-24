@@ -23,6 +23,24 @@
   </div>
 
   <ul class="menu" id="sidebar-menu">
+    @if (user != "admin") {
+    <li>
+      <a class="nav-link"
+         routerLink="/profile"
+         routerLinkActive="active"
+         #profileLink="routerLinkActive"
+         [attr.aria-current]="profileLink.isActive ? 'page' : null"
+         data-label="Profile">
+        <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="8" r="4" />
+          <path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1" />
+        </svg>
+        <span class="nav-label">Profile</span>
+      </a>
+    </li>
+    }
+
+    @else {
     <li>
       <a class="nav-link"
          routerLink="/users"
@@ -70,5 +88,21 @@
         <span class="nav-label">Designations</span>
       </a>
     </li>
+
+    <li class="nav-logout">
+      <button type="button"
+              class="nav-link"
+              (click)="logout()"
+              data-label="Logout">
+        <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+          <path d="M16 17l5-5-5-5" />
+          <path d="M21 12H9" />
+        </svg>
+        <span class="nav-label">Logout</span>
+      </button>
+    </li>
+    }
   </ul>
 </nav>
+

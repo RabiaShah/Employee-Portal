@@ -16,13 +16,19 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem(this.key);
-    sessionStorage.removeItem(this.key);
+    localStorage.clear();
+    sessionStorage.clear();
     this.isLoggedIn.set(false);
   }
 
   getToken(): string | null {
-    return localStorage.getItem(this.key) ?? sessionStorage.getItem(this.key);
+    return localStorage.getItem(this.key) && sessionStorage.getItem(this.key);
   }
+
+  getUser(): string | null {
+    return localStorage.getItem("username");
+    }
+
+    setUser(user: string): void { localStorage.setItem("username", user); }
 
 }

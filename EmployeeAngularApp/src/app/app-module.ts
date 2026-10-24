@@ -9,11 +9,14 @@ import { Departments } from './departments/departments';
 import { Home } from './home/home';
 import { Dashboard } from './dashboard/dashboard';
 import { Login } from './login/login';
+import { Profile } from './profile/profile';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { authInterceptor } from './services/auth/auth.interceptor';
 
 @NgModule({
-  declarations: [App, Users, Designations, Departments, Home, Dashboard, Login],
+  declarations: [App, Users, Designations, Departments, Home, Dashboard, Login, Profile],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
-  providers: [provideBrowserGlobalErrorListeners()],
+  providers: [provideBrowserGlobalErrorListeners(), provideHttpClient(withInterceptors([authInterceptor]))],
   bootstrap: [App],
 })
 export class AppModule {}

@@ -12,7 +12,7 @@ export class App {
 
   isCollapsed = false;
   auth = inject(AuthService);
- 
+  
   @Output() collapsedChange = new EventEmitter<boolean>();
  
   toggle(): void {

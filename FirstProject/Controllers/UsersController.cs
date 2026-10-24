@@ -1,7 +1,9 @@
 ﻿using FirstProject.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace FirstProject.Controllers
 {
@@ -116,6 +118,23 @@ namespace FirstProject.Controllers
             return NoContent();
         }
 
+        [Authorize]
+        [HttpGet("GetProfile")]
+        public async Task<IActionResult> GetProfile()
+        {
+            try
+            {
+                var getClaim = User.FindFirst("userId")?.Value;
+                if (!int.TryParse(getClaim, out var id)) return Unauthorized();
+                var user = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
+                if (user != null) return Ok(user);
+                else return BadRequest(new { message = "User not found" });
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, $"An error occurred while adding a user: {ex.Message}");
+            }
+        }
 
     }
 }

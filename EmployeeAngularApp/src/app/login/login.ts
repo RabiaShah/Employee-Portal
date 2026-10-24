@@ -35,7 +35,7 @@ export class Login {
         this.isLoading = false;
         localStorage.setItem('token', res.token);
         this.auth.login(res.token, this.rememberMe);
-        console.log('Login success');
+        this.auth.setUser(res.user);
         this.router.navigate(['/home']);
       },
       error: (err) => {

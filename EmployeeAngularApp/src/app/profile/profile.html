@@ -1,0 +1,105 @@
+<section class="profile-page">
+  @if (isLoading()) {
+  <div class="state-card">Loading your profile...</div>
+  } @else if (errorMessage() && !profile()) {
+  <div class="state-card error">
+    {{ errorMessage() }}
+    <button type="button" class="btn btn-ghost" (click)="load()">Retry</button>
+  </div>
+  } @else if (profile(); as p) {
+  <div class="card">
+    <!-- Header -->
+    <header class="card-header">
+      <div class="avatar" aria-hidden="true">{{ initials() }}</div>
+      <div class="who">
+        <h2>{{ p.firstName }} {{ p.lastName }}</h2>
+        <p>{{ p.designation }} &middot; {{ p.department }}</p>
+      </div>
+
+      @if (!isEditing()) {
+      <button type="button" class="btn btn-primary" (click)="startEdit()">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7 M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+        </svg>
+        Edit profile
+      </button>
+      }
+    </header>
+
+    @if (successMessage()) {
+    <div class="notice success" role="status">{{ successMessage() }}</div>
+    }
+    @if (errorMessage()) {
+    <div class="notice danger" role="alert">{{ errorMessage() }}</div>
+    }
+
+    <form #profileForm="ngForm" (ngSubmit)="save(profileForm)" novalidate>
+      <div class="grid">
+        <!-- Read-only fields -->
+        <div class="field">
+          <label>First name</label>
+          <div class="value locked">{{ p.firstName }}</div>
+        </div>
+
+        <div class="field">
+          <label>Last name</label>
+          <div class="value locked">{{ p.lastName }}</div>
+        </div>
+
+        <div class="field">
+          <label>Department</label>
+          <div class="value locked">{{ p.department }}</div>
+        </div>
+
+        <div class="field">
+          <label>Designation</label>
+          <div class="value locked">{{ p.designation }}</div>
+        </div>
+
+        <!-- Editable fields -->
+        <div class="field">
+          <label for="phone">Phone</label>
+          @if (isEditing()) {
+          <input id="phone"
+                 name="phone"
+                 type="tel"
+                 [(ngModel)]="form.phone"
+                 #phone="ngModel"
+                 pattern="^[0-9+\-\s]{7,15}$"
+                 [class.invalid]="phone.invalid && (phone.touched || profileForm.submitted)"
+                 placeholder="e.g. 0412 345 678" />
+          @if (phone.invalid && (phone.touched || profileForm.submitted)) {
+          <small class="error">Enter a valid phone number (7 to 15 digits).</small>
+          }
+          } @else {
+          <div class="value">{{ p.phone || 'Not provided' }}</div>
+          }
+        </div>
+
+        <div class="field full">
+          <label for="address">Address</label>
+          @if (isEditing()) {
+          <textarea id="address"
+                    name="address"
+                    rows="3"
+                    maxlength="200"
+                    [(ngModel)]="form.address"
+                    placeholder="Street, city, postcode"></textarea>
+          } @else {
+          <div class="value">{{ p.address || 'Not provided' }}</div>
+          }
+        </div>
+      </div>
+
+      @if (isEditing()) {
+      <div class="actions">
+        <button type="button" class="btn btn-ghost" (click)="cancel()" [disabled]="isSaving()">Cancel</button>
+        <button type="submit" class="btn btn-primary" [disabled]="isSaving()">
+          {{ isSaving() ? 'Saving...' : 'Save changes' }}
+        </button>
+      </div>
+      }
+    </form>
+  </div>
+  }
+</section>

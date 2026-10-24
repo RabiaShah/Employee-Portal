@@ -7,6 +7,7 @@ import { Departments } from './departments/departments';
 import { App } from './app';
 import { Dashboard } from './dashboard/dashboard';
 import { Login } from './login/login';
+import { Profile } from './profile/profile';
 
 const routes: Routes = [
   {
@@ -25,6 +26,10 @@ const routes: Routes = [
   {
     path: 'home',
     component: Home
+  },
+  {
+    path: 'profile',
+    component: Profile
   },
   {
     path: 'users',
