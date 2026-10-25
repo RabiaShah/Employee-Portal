@@ -22,10 +22,10 @@ export class Users implements OnInit{
   isEditing = false;
   formUser: User = this.emptyUser();
   userToDelete: User | null = null;
- 
-  // departments = ['Engineering', 'HR', 'Finance', 'Marketing', 'Sales'];
-  // designations = ['Intern', 'Associate', 'Senior Associate', 'Manager', 'Director'];
 
+  successMessage = signal('');
+  private toastTimer?: ReturnType<typeof setTimeout>;
+ 
   departments : any[] = [];
   designations : any[] = [];
 
@@ -74,7 +74,6 @@ getDesignations() {
   });
 }
 
-  // Filters by name OR phone number
   get filteredUsers(): any[] {
     const term = this.searchTerm.trim().toLowerCase();
     if (!term) {
@@ -99,7 +98,7 @@ getDesignations() {
  
   openEdit(user: User): void {
     this.isEditing = true;
-    this.formUser = { ...user }; // copy so cancelling doesn't change the row
+    this.formUser = { ...user }; 
     this.showForm = true;
   }
  
@@ -113,9 +112,9 @@ getDesignations() {
     }
  
     if (this.isEditing) {
-      // TODO: call your API here, e.g. this.userService.update(this.formUser)
       this.http.put<any>(`${this.apiUrl}/Users/UpdateUser`,this.formUser).subscribe({
         next: (data) => {
+          this.showSuccess("User updated successfully.");
           this.getUsers();
         },
         error: (error) => {
@@ -123,10 +122,9 @@ getDesignations() {
         }
       });
     } else {
-      // TODO: call your API here, e.g. this.userService.create(this.formUser)
-      debugger;
       this.http.post<any>(`${this.apiUrl}/Users/AddUser`,this.formUser).subscribe({
         next: (data) => {
+          this.showSuccess("User added successfully.");
           this.getUsers();
         },
         error: (error) => {
@@ -143,10 +141,9 @@ getDesignations() {
  
   confirmDelete(): void {
     if (this.userToDelete) {
-      // TODO: call your API here, e.g. this.userService.delete(this.userToDelete.id)
-
       this.http.delete<any>(`${this.apiUrl}/Users/DeleteUser/${this.userToDelete.id}`).subscribe({
         next: (data) => {
+          this.showSuccess("User deleted successfully.");
           this.getUsers();
         },
         error: (error) => {
@@ -159,5 +156,15 @@ getDesignations() {
  
   private emptyUser(): User {
     return { id: 0, firstName: '', lastName: '', phone: null, address: null, deptId: 1, desigId: 1, isActive: true, department: null, designation: null};
+  }
+
+  showSuccess(message: string): void {
+    clearTimeout(this.toastTimer);              
+    this.successMessage.set(message);
+    this.toastTimer = setTimeout(() => this.successMessage.set(''), 3000);
+  }
+
+  ngOnDestroy(): void {
+    clearTimeout(this.toastTimer);
   }
 }

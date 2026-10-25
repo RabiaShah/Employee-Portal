@@ -12,7 +12,7 @@ import { User } from '../models/Users';
 })
 export class Profile implements OnInit {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:5171/api/Users'; // change to your API URL
+  private apiUrl = 'http://localhost:5171/api/Users'; 
 
   profile = signal<User| null>(null);
   isLoading = signal(true);
@@ -21,7 +21,6 @@ export class Profile implements OnInit {
   errorMessage = signal('');
   successMessage = signal('');
 
-  // Only the editable fields live in the form
   form = { phone: '', address: '' };
 
   initials = computed(() => {
@@ -43,7 +42,6 @@ export class Profile implements OnInit {
         this.isLoading.set(false);
       },
       error: (err) => {
-        console.error('Profile load error:', err);
         this.errorMessage.set('Could not load your profile.');
         this.isLoading.set(false);
       },
@@ -66,19 +64,13 @@ export class Profile implements OnInit {
 
   save(f: NgForm): void {
     if (f.invalid) return;
-
-    const payload = {
-      phone: this.form.phone.trim() || null,
-      address: this.form.address.trim() || null,
-    };
+    this.profile.update((p) => (p ? { ...p, phone: Number(this.form.phone.trim() || null), address: this.form.address.trim() || null } : p));
 
     this.isSaving.set(true);
     this.errorMessage.set('');
 
-    this.http.put(`${this.apiUrl}/UpdateProfile`, payload).subscribe({
+    this.http.put(`${this.apiUrl}/UpdateUser`, this.profile()).subscribe({
       next: () => {
-        // Update the view with the saved values
-        //this.profile.update((p) => (p ? { ...p, ...payload } : p));
         this.isSaving.set(false);
         this.isEditing.set(false);
         this.successMessage.set('Profile updated successfully.');

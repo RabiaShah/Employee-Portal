@@ -92,12 +92,12 @@
             </div>
           </div>
 
-          <button type="submit" class="btn btn-signin w-100" [disabled]="isLoading">
-            <span *ngIf="isLoading"
+          <button type="submit" class="btn btn-signin w-100" [disabled]="isLoading()">
+            <span *ngIf="isLoading()"
                   class="spinner-border spinner-border-sm me-2"
                   role="status"
                   aria-hidden="true"></span>
-            {{ isLoading ? 'Signing in...' : 'Sign in' }}
+            {{ isLoading() ? 'Signing in...' : 'Sign in' }}
           </button>
         </form>
       </div>

@@ -13,7 +13,7 @@ public partial class Designation
 
     public int DeptId { get; set; }
 
-    public virtual Departments? Dept { get; set; } = null!;
+    public string? DeptName { get; set; } = null;
 
-    public virtual ICollection<User> Users { get; set; } = new List<User>();
+    public virtual Departments? Dept { get; set; } = null!;
 }

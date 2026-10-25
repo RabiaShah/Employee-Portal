@@ -21,7 +21,7 @@ namespace FirstProject.Controllers
         {
             try
             {
-                var designations = await dbContext.Designations.ToListAsync();
+                List<Designation> designations = await dbContext.Designations.FromSqlRaw("GetDesignations").ToListAsync();
                 return Ok(designations);
             }
             catch (Exception ex)
@@ -40,8 +40,6 @@ namespace FirstProject.Controllers
 
                 if (addDesig == 1) return Ok(new { message = "Designation added successfully!" });
                 else return BadRequest(new { message = "Unable to add designation" });
-
-                return NoContent();
             }
             catch (Exception ex)
             {

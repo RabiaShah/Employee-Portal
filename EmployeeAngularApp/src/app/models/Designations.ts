@@ -4,7 +4,8 @@ import {Department} from '../models/Departments';
 
 export interface Designation {
   desigId: number;
-  desigName: string;
+  desigName: string | null;
+  deptName: string | null;
   deptId: number;
   dept?: Department | null;
   users?: User[];

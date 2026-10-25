@@ -115,4 +115,17 @@
       </div>
     </div>
   </div>
+
+  @if (successMessage()) {
+  <div class="toast success" role="status" aria-live="polite">
+    <svg class="toast-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+      <path d="M22 4L12 14.01l-3-3" />
+    </svg>
+    <span class="toast-text">{{ successMessage() }}</span>
+    <button type="button" class="toast-close" (click)="closeToast()" aria-label="Dismiss message">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18 M6 6l12 12" /></svg>
+    </button>
+  </div>
+  }
 </section>
