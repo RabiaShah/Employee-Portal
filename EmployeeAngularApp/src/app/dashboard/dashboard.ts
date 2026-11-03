@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter, inject, OnInit} from '@angular/core';
 import { AuthService } from '../services/auth/auth';
-import { Router } from '@angular/router';
+import { Router, RouterLinkActive} from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',

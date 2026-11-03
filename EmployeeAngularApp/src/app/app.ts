@@ -12,11 +12,8 @@ export class App {
 
   isCollapsed = false;
   auth = inject(AuthService);
-  
-  @Output() collapsedChange = new EventEmitter<boolean>();
- 
+   
   toggle(): void {
     this.isCollapsed = !this.isCollapsed;
-    this.collapsedChange.emit(this.isCollapsed);
   }
 }

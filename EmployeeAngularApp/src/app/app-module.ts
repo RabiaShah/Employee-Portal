@@ -2,6 +2,7 @@ import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing-module';
+import { RouterLinkActive, RouterOutlet, RouterModule } from '@angular/router';
 import { App } from './app';
 import { Users } from './users/users';
 import { Designations } from './designations/designations';
@@ -15,8 +16,9 @@ import { authInterceptor } from './services/auth/auth.interceptor';
 
 @NgModule({
   declarations: [App, Users, Designations, Departments, Home, Dashboard, Login, Profile],
-  imports: [BrowserModule, AppRoutingModule, FormsModule],
+  imports: [BrowserModule, AppRoutingModule, FormsModule, RouterModule, RouterLinkActive, RouterOutlet],
   providers: [provideBrowserGlobalErrorListeners(), provideHttpClient(withInterceptors([authInterceptor]))],
   bootstrap: [App],
 })
+
 export class AppModule {}
