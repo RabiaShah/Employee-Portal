@@ -16,6 +16,7 @@ A full-stack employee management portal built with **ASP.NET Core (.NET 10)**, *
 ## Table of Contents
 
 - [Features](#features)
+- [Screenshots](#screenshots)
 - [Tech Stack](#tech-stack)
 - [Architecture](#architecture)
 - [Authentication and Authorization](#authentication-and-authorization)
@@ -39,6 +40,30 @@ A full-stack employee management portal built with **ASP.NET Core (.NET 10)**, *
 - **Reactive Angular UI** using Signals for state and RxJS Observables for HTTP calls
 - **Collapsible sidebar navigation** with route-based active states
 - **Unit tests** using Vitest and Jasmine
+
+## Screenshots
+
+### Sign in
+
+![Sign in page](docs/screenshots/login.png)
+
+### Admin: Users
+
+The admin sees the full Users module, with search, add, edit and delete.
+
+![Users list](docs/screenshots/users-list.png)
+
+| Edit user | Delete user |
+| --- | --- |
+| ![Edit user dialog](docs/screenshots/edit-user.png) | ![Delete user confirmation](docs/screenshots/delete-user.png) |
+
+### Standard user: Profile
+
+Standard users see only their own profile, and can edit their phone number and address.
+
+| View profile | Edit profile |
+| --- | --- |
+| ![Profile page](docs/screenshots/profile.png) | ![Edit profile page](docs/screenshots/edit-profile.png) |
 
 ## Tech Stack
 
