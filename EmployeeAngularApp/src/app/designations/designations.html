@@ -76,7 +76,7 @@
   <!-- Delete confirmation -->
   <div class="backdrop" *ngIf="desigToDelete" (click)="desigToDelete = null">
     <div class="dialog small" role="alertdialog" aria-modal="true" (click)="$event.stopPropagation()">
-      <h3>Delete user</h3>
+      <h3>Delete designation</h3>
       <p>Delete <strong>{{ desigToDelete.desigName }}</strong>? This can't be undone.</p>
       <div class="dialog-actions">
         <button type="button" class="btn btn-ghost" (click)="desigToDelete = null">Cancel</button>
